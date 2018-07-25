@@ -38,6 +38,10 @@ julia> using Pkg; Pkg.develop("")
 - [ ] Julia 语言的元编程和宏
 - [ ] 编写高性能的Julia程序
 
+## 致谢
+
+感谢 **史雪松** 对C++部分的例子的建议。
+
 ## 开源协议
 
 MIT协议
