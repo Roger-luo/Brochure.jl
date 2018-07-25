@@ -4,7 +4,11 @@
 的包管理器将自动安装），那么请打开Julia的交互式环境（REPL）：
 
 ```julia
-julia> using IJulia; IJulia.notebook()
+julia> using IJulia; notebook()
 ```
 
 或者如果你已经将 `jupyter-notebook` 添加在环境变量中，请在命令行中直接启动即可。
+
+```sh
+jupyter-notebook tutorial.ipynb
+```

@@ -1,5 +1,7 @@
 module TutorialZH
 
-# package code goes here
+using IJulia
+
+start() = notebook(dir=joinpath(@__DIR__, "..", "notebooks"))
 
 end # module
