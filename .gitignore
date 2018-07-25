@@ -11,6 +11,14 @@ docs/site/
 **/*.ipynb_checkpoints
 **/**/*.ipynb_checkpoints
 
+*.jld2
+**/*.jld2
+**/**/*.jld2
+
+*.jld
+**/*.jld
+**/**/*.jld
+
 _*.dat
 *.swp
 __pycache__/
