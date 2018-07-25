@@ -3,3 +3,14 @@
 *.jl.mem
 
 Manifest.toml
+
+docs/build/
+docs/site/
+
+*.ipynb_checkpoints
+**/*.ipynb_checkpoints
+**/**/*.ipynb_checkpoints
+
+_*.dat
+*.swp
+__pycache__/
