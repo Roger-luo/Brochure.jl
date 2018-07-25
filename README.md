@@ -11,19 +11,19 @@ Chinese Tutorial for Julia Language.
 在 v0.6 中，请使用 `Pkg` 模块进行安装
 
 ```julia
-julia> Pkg.clone("")
+julia> Pkg.clone("https://github.com/Roger-luo/TutorialZH.jl.git")
 ```
 
 在 v0.7 中，请使用REPL的 pkg mode 安装，按 `]` 键
 
 ```julia
-(v0.7) pkg> dev
+(v0.7) pkg> dev https://github.com/Roger-luo/TutorialZH.jl.git#master
 ```
 
 或者使用 `Pkg` 模块
 
 ```julia
-julia> using Pkg; Pkg.develop("")
+julia> using Pkg; Pkg.develop("https://github.com/Roger-luo/TutorialZH.jl.git#master")
 ```
 
 ## 贡献和建议
@@ -32,8 +32,8 @@ julia> using Pkg; Pkg.develop("")
 
 ## 内容
 
-- [ ] Julia 语言的简介
-- [ ] Julia 语法快速入门
+- [x] Julia 语言的简介
+- [x] Julia 语法快速入门
 - [ ] Julia 语言进阶
 - [ ] Julia 语言的元编程和宏
 - [ ] 编写高性能的Julia程序
