@@ -12,3 +12,5 @@ julia> using IJulia; notebook()
 ```sh
 jupyter-notebook tutorial.ipynb
 ```
+
+如果要观看幻灯片请使用 `RISE` 插件。
