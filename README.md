@@ -11,13 +11,13 @@ Chinese Tutorial for Julia Language.
 请使用REPL的 pkg mode 安装，按 `]` 键
 
 ```julia
-(v1.0) pkg> dev https://github.com/Roger-luo/TutorialZH.jl.git
+(v1.0) pkg> add https://github.com/Roger-luo/TutorialZH.jl.git
 ```
 
 或者使用 `Pkg` 模块
 
 ```julia
-julia> using Pkg; Pkg.develop("https://github.com/Roger-luo/TutorialZH.jl.git#master")
+julia> using Pkg; Pkg.add("https://github.com/Roger-luo/TutorialZH.jl.git#master")
 ```
 
 这个教程会自动安装所需的package，你只需要在REPL里输入以下命令就可以运行交互式的notebook
