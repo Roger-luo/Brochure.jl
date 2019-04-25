@@ -17,7 +17,7 @@ Chinese Tutorial for Julia Language.
 或者使用 `Pkg` 模块
 
 ```julia
-julia> using Pkg; Pkg.add("https://github.com/Roger-luo/TutorialZH.jl.git#master")
+julia> using Pkg; Pkg.add("https://github.com/Roger-luo/TutorialZH.jl.git")
 ```
 
 这个教程会自动安装所需的package，你只需要在REPL里输入以下命令就可以运行交互式的notebook
