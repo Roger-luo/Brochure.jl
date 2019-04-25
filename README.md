@@ -6,24 +6,26 @@ Chinese Tutorial for Julia Language.
 
 ## 使用方法
 
-兼容 `v0.6` 和 `v0.7` (1.0的pre-release)，请通过Julia自带的包管理器进行安装。
+请通过Julia自带的包管理器进行安装。
 
-在 v0.6 中，请使用 `Pkg` 模块进行安装
-
-```julia
-julia> Pkg.clone("https://github.com/Roger-luo/TutorialZH.jl.git")
-```
-
-在 v0.7 中，请使用REPL的 pkg mode 安装，按 `]` 键
+请使用REPL的 pkg mode 安装，按 `]` 键
 
 ```julia
-(v0.7) pkg> dev https://github.com/Roger-luo/TutorialZH.jl.git#master
+(v1.0) pkg> dev https://github.com/Roger-luo/TutorialZH.jl.git
 ```
 
 或者使用 `Pkg` 模块
 
 ```julia
 julia> using Pkg; Pkg.develop("https://github.com/Roger-luo/TutorialZH.jl.git#master")
+```
+
+这个教程会自动安装所需的package，你只需要在REPL里输入以下命令就可以运行交互式的notebook
+
+```julia
+julia> using TutorialZH
+
+julia> tutorial()
 ```
 
 ## 贡献和建议
