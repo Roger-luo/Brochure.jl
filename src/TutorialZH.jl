@@ -16,6 +16,7 @@ end
 
 REQUIRE = [
     "GR",
+    "JLD2",
     "PyCall",
     "IJulia",
     "Revise",
