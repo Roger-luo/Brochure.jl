@@ -1,4 +1,4 @@
-module JuliaGuide
+module Brochure
 
 greet() = print("Hello World!")
 
