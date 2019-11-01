@@ -1,4 +1,4 @@
-using JuliaGuide
+using Brochure
 using Test
 
 @testset "JuliaGuide.jl" begin
