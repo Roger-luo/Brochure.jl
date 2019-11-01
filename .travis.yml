@@ -1,0 +1,11 @@
+## Documentation: http://docs.travis-ci.com/user/languages/julia/
+language: julia
+jobs:
+  include:
+    - stage: "Documentation"
+      julia: 1.2
+      os: linux
+      script:
+        - julia --project -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        - julia --project make.jl deploy
+      name: "HTML"
