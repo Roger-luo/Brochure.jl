@@ -34,4 +34,4 @@ include("make.jl")
 
 赞赏是让我完成它的最好鼓励
 
-![](src/assets/buymecoffee.png)
+<img src="https://github.com/Roger-luo/Brochure.jl/raw/master/src/assets/buymecoffee.png" alt="buymecoffee" width="210"> </img>
