@@ -1,4 +1,5 @@
-using Documenter
+using Documenter, LiveServer
+using LiveServer: SimpleWatcher, WatchedFile, set_callback!, file_changed_callback
 
 make() = makedocs(
     format=Documenter.HTML(prettyurls=false, assets = ["assets/chainrules.css"]),
@@ -6,12 +7,40 @@ make() = makedocs(
     authors="罗秀哲 Xiuzhe (Roger) Luo",
     pages=[
         "简介" => "index.md",
+        "在开始之前" => "before-we-start.md",
+        "程序的编写流程" => "workflow.md",
+        "快速入门" => "quick-start.md",
+        "实现你自己的稀疏矩阵" => "define-your-own-matrix.md",
+        "实现你自己的自动微分" => "automatic-differentiation.md",
     ],
 )
 
-make()
+function scan_files!(dw::SimpleWatcher)
+    for (root, _, files) in walkdir("src"), file in files
+        push!(dw.watchedfiles, WatchedFile(joinpath(root, file)))
+    end
+end
 
-deploydocs(
-    repo = "github.com/Roger-luo/JuliaGuide.jl.git",
-    target = "build",
-)
+function update_book_callback(fp::AbstractString)
+    if splitext(fp)[2] == ".md"
+        make()
+    end
+    file_changed_callback(fp)
+    return nothing
+end
+
+function serve_book(verbose=false)
+    watcher = SimpleWatcher()
+    scan_files!(watcher)
+    set_callback!(watcher, update_book_callback)
+    make()
+    serve(watcher, dir="build", verbose=verbose)
+    return nothing
+end
+
+serve_book()
+
+# deploydocs(
+#     repo = "github.com/Roger-luo/JuliaGuide.jl.git",
+#     target = "build",
+# )
