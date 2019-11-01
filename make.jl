@@ -2,7 +2,6 @@ using Documenter, LiveServer
 using LiveServer: SimpleWatcher, WatchedFile, set_callback!, file_changed_callback
 
 const deploy = "deploy" in ARGS
-const serve = ("s" in ARGS) || ("serve" in ARGS)
 
 make() = makedocs(
     format=Documenter.HTML(
@@ -44,7 +43,7 @@ function serve_book(verbose=false)
     return nothing
 end
 
-if serve
+if ("s" in ARGS) || ("serve" in ARGS)
     serve_book("verbose" in ARGS)
 end
 
