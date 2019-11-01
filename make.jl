@@ -1,9 +1,12 @@
 using Documenter, LiveServer
 using LiveServer: SimpleWatcher, WatchedFile, set_callback!, file_changed_callback
 
+const deploy = "deploy" in ARGS
+const serve = ("s" in ARGS) || ("serve" in ARGS)
+
 make() = makedocs(
     format=Documenter.HTML(
-        prettyurls = ("deploy" in ARGS),
+        prettyurls = deploy,
     ),
     sitename="Julia编程指南",
     authors="罗秀哲 Xiuzhe (Roger) Luo",
@@ -40,11 +43,12 @@ function serve_book(verbose=false)
     return nothing
 end
 
-if ("s" in ARGS) || ("serve" in ARGS)
+if serve
     serve_book("verbose" in ARGS)
 end
 
-if "depoly" in ARGS
+if deploy
+    make()
     deploydocs(
         repo = "github.com/Roger-luo/Brochure.jl.git",
         target = "build",
