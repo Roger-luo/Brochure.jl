@@ -7,6 +7,7 @@ const serve = ("s" in ARGS) || ("serve" in ARGS)
 make() = makedocs(
     format=Documenter.HTML(
         prettyurls = deploy,
+        canonical = ("deploy" in ARGS) ? "https://rogerluo.me/Brochure.jl/dev/" : nothing,
     ),
     sitename="Julia编程指南",
     authors="罗秀哲 Xiuzhe (Roger) Luo",
