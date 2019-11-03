@@ -1,6 +1,7 @@
 # Julia编程指南
 
 [![Build Status](https://travis-ci.com/Roger-luo/Brochure.jl.svg?branch=master)](https://travis-ci.com/Roger-luo/Brochure.jl)
+[在线阅读](http://rogerluo.me/Brochure.jl/dev/)
 
 **一本我不知道什么时候才会写完的书，但是你可以先看着**
 
