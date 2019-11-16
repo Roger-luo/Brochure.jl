@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>快速入门 · Julia编程指南</title><link rel="canonical" href="https://rogerluo.me/Brochure.jl/dev/quick-start/index.html"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Julia编程指南</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">简介</a></li><li><a class="tocitem" href="../before-we-start/">在开始之前</a></li><li><a class="tocitem" href="../workflow/">程序的编写流程</a></li><li class="is-active"><a class="tocitem" href>快速入门</a><ul class="internal"><li><a class="tocitem" href="#变量（Variable）-1"><span>变量（Variable）</span></a></li><li><a class="tocitem" href="#类型（Type）-1"><span>类型（Type）</span></a></li><li><a class="tocitem" href="#函数-1"><span>函数</span></a></li><li><a class="tocitem" href="#控制流-1"><span>控制流</span></a></li><li><a class="tocitem" href="#自定义类型-1"><span>自定义类型</span></a></li></ul></li><li><a class="tocitem" href="../define-your-own-matrix/">实现你自己的稀疏矩阵</a></li><li><a class="tocitem" href="../automatic-differentiation/">实现你自己的自动微分</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>快速入门</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>快速入门</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/Roger-luo/Brochure.jl/blob/master/src/quick-start.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="快速入门-1">快速入门<a class="docs-heading-anchor" href="#快速入门-1" title="Permalink"></a></h1><p>尽管本书不会过多关注基础入门知识，但是为了让我们的读者能够站在同一起跑线上，我们在这一节快速过一遍Julia的各种语法。 如果你已经对Julia很熟练了，那么不要浪费时间请跳过本节。如果你对Julia还不了解，我依然建议你完整阅读Julia官方文档 的手册部分（Manual），这部分我删去了很多细节，而着重在概念和针对一些有学习过其它语言的人的常见误区的解释。</p><h2 id="变量（Variable）-1">变量（Variable）<a class="docs-heading-anchor" href="#变量（Variable）-1" title="Permalink"></a></h2><p>Julia语言中最基础的元素是变量，简单的来说变量就是一个绑定了一个值（value）的名字（name），例如</p><pre><code class="language-julia-repl">julia&gt; x = 1
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>快速入门 · Julia编程指南</title><link rel="canonical" href="https://rogerluo.me/Brochure.jl/dev/quick-start/index.html"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Julia编程指南</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">简介</a></li><li><a class="tocitem" href="../before-we-start/">在开始之前</a></li><li><a class="tocitem" href="../workflow/">程序的编写流程</a></li><li class="is-active"><a class="tocitem" href>快速入门</a><ul class="internal"><li><a class="tocitem" href="#变量（Variable）-1"><span>变量（Variable）</span></a></li><li><a class="tocitem" href="#类型（Type）-1"><span>类型（Type）</span></a></li><li><a class="tocitem" href="#函数-1"><span>函数</span></a></li><li><a class="tocitem" href="#控制流-1"><span>控制流</span></a></li><li><a class="tocitem" href="#自定义类型-1"><span>自定义类型</span></a></li><li><a class="tocitem" href="#参数类型-1"><span>参数类型</span></a></li><li><a class="tocitem" href="#数组-1"><span>数组</span></a></li><li><a class="tocitem" href="#表达式-1"><span>表达式</span></a></li><li><a class="tocitem" href="#再谈谈函数-1"><span>再谈谈函数</span></a></li><li><a class="tocitem" href="#变量的作用域-1"><span>变量的作用域</span></a></li><li><a class="tocitem" href="#语法糖（Syntax-Sugar）以及一些语法的等价性-1"><span>语法糖（Syntax Sugar）以及一些语法的等价性</span></a></li></ul></li><li><a class="tocitem" href="../define-your-own-matrix/">实现你自己的稀疏矩阵</a></li><li><a class="tocitem" href="../automatic-differentiation/">实现你自己的自动微分</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>快速入门</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>快速入门</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/Roger-luo/Brochure.jl/blob/master/src/quick-start.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="快速入门-1">快速入门<a class="docs-heading-anchor" href="#快速入门-1" title="Permalink"></a></h1><p>尽管本书不会过多关注基础入门知识，但是为了让我们的读者能够站在同一起跑线上，我们在这一节快速过一遍Julia的各种语法。 如果你已经对Julia很熟练了，那么不要浪费时间请跳过本节。如果你对Julia还不了解，我依然<strong>建议你完整阅读Julia官方文档的手册部分（Manual）</strong>， 这部分我<strong>删去了很多细节</strong>，而<strong>着重在相对深入的概念解释</strong>和针对一些有学习过其它语言的人的<strong>常见误区的解释</strong>。</p><h2 id="变量（Variable）-1">变量（Variable）<a class="docs-heading-anchor" href="#变量（Variable）-1" title="Permalink"></a></h2><p>Julia语言中最基础的元素是变量，简单的来说变量就是一个绑定了一个值（value）的名字（name），例如</p><pre><code class="language-julia-repl">julia&gt; x = 1
 1</code></pre><p>这里 <code>x</code> 是一个变量，它的名字叫 <code>x</code>，它的值是一个数字 <code>1</code>。但是一个名字并不需要唯一的绑定这个值，</p><pre><code class="language-julia-repl">julia&gt; x = &quot;我是一个变量的值&quot;
-&quot;我是一个变量的值&quot;</code></pre><h3 id="和-C/C-的不同-1">和 C/C++ 的不同<a class="docs-heading-anchor" href="#和-C/C-的不同-1" title="Permalink"></a></h3><p>在 C/C++ 里，一个变量是唯一绑定一个类型的，并且对应内存地址。Julia的变量类似于 C++ 的引用（reference）， 但依然在语义上不完全一样。具体的一个体现就是Julia不能重载赋值运算符，因为由于变量只是绑定一个名字，所以不存在 需要重载赋值运算的场景。单独使用 <code>=</code> 永远只表示给右边的值绑定左边的名字。</p><h2 id="类型（Type）-1">类型（Type）<a class="docs-heading-anchor" href="#类型（Type）-1" title="Permalink"></a></h2><p>类型是一种标记，它存在的目的是为了告诉编译器部分关于你代码的信息，或者简单来说，它是对变量的“分类”。Julia语言是一个 强类型（strong typed）语言，这意味着所有的变量/值都有一个类型。比如 <code>1</code> 的类型是 <code>Int</code>，你可以用 <code>typeof(1)</code> 来查看它。</p><p>当我们把一个值绑定给一个变量之后，这个变量也自动具有了对应的类型</p><pre><code class="language-julia-repl">julia&gt; x = 1
+&quot;我是一个变量的值&quot;</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>在 C/C++ 里，一个变量是唯一绑定一个类型的，并且对应内存地址。Julia的变量类似于 C++ 的引用（reference）， 但依然在语义上不完全一样。具体的一个体现就是Julia不能重载赋值运算符，因为由于变量只是绑定一个名字，所以不存在 需要重载赋值运算的场景。单独使用 <code>=</code> 永远只表示给右边的值绑定左边的名字。</p></div></div><h2 id="类型（Type）-1">类型（Type）<a class="docs-heading-anchor" href="#类型（Type）-1" title="Permalink"></a></h2><p>类型是一种标记，它存在的目的是为了告诉编译器部分关于你代码的信息，或者简单来说，它是对变量的“分类”。Julia语言是一个 强类型（strong typed）语言，这意味着所有的变量/值都有一个类型。比如 <code>1</code> 的类型是 <code>Int</code>，你可以用 <code>typeof(1)</code> 来查看它。</p><p>当我们把一个值绑定给一个变量之后，这个变量也自动具有了对应的类型</p><pre><code class="language-julia-repl">julia&gt; x = 1
 1
 
 julia&gt; typeof(x)
@@ -9,4 +9,109 @@ Int64</code></pre><p>如果你给这个变量赋予了新的值，那么变量�
 &quot;我是一个变量的值&quot;
 
 julia&gt; typeof(x)
-String</code></pre><h2 id="函数-1">函数<a class="docs-heading-anchor" href="#函数-1" title="Permalink"></a></h2><h2 id="控制流-1">控制流<a class="docs-heading-anchor" href="#控制流-1" title="Permalink"></a></h2><h2 id="自定义类型-1">自定义类型<a class="docs-heading-anchor" href="#自定义类型-1" title="Permalink"></a></h2></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../workflow/">« 程序的编写流程</a><a class="docs-footer-nextpage" href="../define-your-own-matrix/">实现你自己的稀疏矩阵 »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 16 November 2019 06:26">Saturday 16 November 2019</span>. Using Julia version 1.2.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+String</code></pre><p>而类型的类型是数据类型 <code>DataType</code></p><pre><code class="language-julia-repl">julia&gt; typeof(Int)
+DataType</code></pre><p><code>DataType</code> 的类型还是 <code>DataType</code></p><pre><code class="language-julia-repl">julia&gt; typeof(DataType)
+DataType</code></pre><p>在Julia里所有的变量都有一个类型，你可以用 <code>typeof</code> 来获取它。</p><h2 id="函数-1">函数<a class="docs-heading-anchor" href="#函数-1" title="Permalink"></a></h2><p>Julia是一个构建在多重派发（multiple dispatch）基础上的语言， 它的函数实际上是一般的，有些翻译里也称为<strong>范型</strong>的函数（generic function）。 而我们每一个具体的函数定义都会为这个函数增加一种方法（method），方法 是一种具体执行这个范型函数的方式。所以很自热的，我们可以声明没有任何方法的 函数</p><pre><code class="language-julia-repl">julia&gt; function foo
+       end
+foo (generic function with 0 methods)</code></pre><p>而每一种不同的输入类型的组合都将创建一个新的方法，</p><pre><code class="language-julia-repl">julia&gt; function foo(x)
+          x + 1
+          return x
+       end
+foo (generic function with 1 method)</code></pre><p>这里 <code>function</code> 和 <code>end</code> 关键字作为标识函数声明的符号。 有人也许会有疑问，为什么Julia里要使用 <code>end</code> 作为结尾，而不是 <code>{}</code> 或者像 Python一样使用锁进呢？当你阅读到 <a href="#表达式-1">表达式</a>这一部分我想你就能够得到部分答案，当你掌握元编程之后，你便会体会到 <code>end</code> 的妙处。</p><p>或者，你也可以使用更简洁的写法。但是注意由于这个声明和上一个声明的类型标签相同（都是一个 <code>Any</code> 类型的函数参数）</p><pre><code class="language-julia-repl">julia&gt; foo(x) = x + 1
+foo (generic function with 1 method)</code></pre><p>我们还可以对函数参数加上类型标注（type annotation），这将具体规定这个方法所适配的类型，例如</p><pre><code class="language-julia-repl">julia&gt; foo(x::Int) = 2x
+foo (generic function with 2 methods)</code></pre><p>或者是更多的变量，不同类型的组合等等</p><pre><code class="language-julia-repl">julia&gt; foo(x::Int, y::Float32) = y
+foo (generic function with 3 methods)
+
+julia&gt; foo(x::Float32, y::Int) = x + y
+foo (generic function with 4 methods)
+
+julia&gt; foo(x, y) = 2x + y
+foo (generic function with 5 methods)</code></pre><h2 id="控制流-1">控制流<a class="docs-heading-anchor" href="#控制流-1" title="Permalink"></a></h2><p>一般来说，控制流包含两种。一种是<a href="#循环表达式-1">循环表达式</a>，一种是<a href="#条件表达式-1">条件表达式</a>。</p><h3 id="循环表达式-1">循环表达式<a class="docs-heading-anchor" href="#循环表达式-1" title="Permalink"></a></h3><p>Julia中可以使用常见的两种方式定义循环，一种是 <code>for</code> 一种是 <code>while</code>。<code>for</code> 关键字后跟 <code>in</code> 关键字表示需要循环的区间</p><pre><code class="language-julia-repl">julia&gt; function foo(start)
+           for k in start:10
+               @show k
+           end
+       end
+foo (generic function with 1 method)
+
+julia&gt; foo(2)
+k = 2
+k = 3
+k = 4
+k = 5
+k = 6
+k = 7
+k = 8
+k = 9
+k = 10</code></pre><p>另外一种则是 <code>while</code> </p><pre><code class="language-julia-repl">julia&gt; function foo(start)
+           k = start
+           while k &lt; 10
+               @show k
+               k += 1
+           end
+       end
+foo (generic function with 1 method)
+
+julia&gt; foo(2)
+k = 2
+k = 3
+k = 4
+k = 5
+k = 6
+k = 7
+k = 8
+k = 9</code></pre><h3 id="条件表达式-1">条件表达式<a class="docs-heading-anchor" href="#条件表达式-1" title="Permalink"></a></h3><p>条件表达式即 <code>if ... else ... end</code>，例如</p><pre><code class="language-julia-repl">julia&gt; function foo(x)
+           if x &gt; 0
+               println(&quot;x 比 0 大&quot;)
+           elseif x &gt; -1
+               println(&quot;x &gt; -1&quot;)
+           else
+               print(&quot;x &lt;= -1&quot;)
+           end
+       end
+foo (generic function with 1 method)
+
+julia&gt; foo(1)
+x 比 0 大
+
+julia&gt; foo(-0.5)
+x &gt; -1
+
+julia&gt; foo(-1)
+x &lt;= -1</code></pre><h2 id="自定义类型-1">自定义类型<a class="docs-heading-anchor" href="#自定义类型-1" title="Permalink"></a></h2><h2 id="参数类型-1">参数类型<a class="docs-heading-anchor" href="#参数类型-1" title="Permalink"></a></h2><h2 id="数组-1">数组<a class="docs-heading-anchor" href="#数组-1" title="Permalink"></a></h2><p>数组是一种特别的类型，和其它语言不同的是，在Julia我们的数组是多维数组（multi-dimensional array）。所谓数组， 实际上它是一种对内存的抽象模型。在Julia里一个数组类型（<code>Array</code>）的实例代表了一块连续的内存</p><p>在Julia里它扮演了两种角色：<strong>计算机意义上的数组</strong>以及<strong>数学意义上的多维张量</strong>。</p><h2 id="表达式-1">表达式<a class="docs-heading-anchor" href="#表达式-1" title="Permalink"></a></h2><p>在Julia里，任何一段程序都首先是一段表达式（expression）。所谓的表达式是一种数据结构，它存储了 一段程序的抽象语法树（abstract syntax tree）。我们可以用引用（quote）语法来获取一段程序的表达式</p><pre><code class="language-julia-repl">julia&gt; ex = :(1 + 2 * b)
+:(1 + 2b)
+
+julia&gt; typeof(ex)
+Expr</code></pre><p>而 <code>ex</code> 的类型则是 <code>Expr</code> 类型。而表达式中暂时没有值的变量则会被解析为一个符号，它的类型是 <code>Symbol</code>， 你可以通过 <code>:</code> + <code>一段合法的变量名</code> 获得这样一个符号。它相当于一种特别的字符串。</p><pre><code class="language-julia-repl">julia&gt; typeof(:a)
+Symbol</code></pre><p><code>Expr</code> 类型里的结构很简单，它包括一个符号类型的头，作为这段表达式的标签，以及一个一维的 <code>Any</code> 类型数组， 这个数组将存储这个表达式的子表达式。这里 <code>dump</code> 将会打印出一个Julia对象的内部结构。</p><pre><code class="language-julia-repl">julia&gt; dump(Expr)
+Expr &lt;: Any
+  head::Symbol
+  args::Array{Any,1}</code></pre><p>我们不妨看看上面的表达式是什么样子的</p><pre><code class="language-julia-repl">julia&gt; dump(:(1 + 2 * b))
+Expr
+  head: Symbol call
+  args: Array{Any}((3,))
+    1: Symbol +
+    2: Int64 1
+    3: Expr
+      head: Symbol call
+      args: Array{Any}((3,))
+        1: Symbol *
+        2: Int64 2
+        3: Symbol b</code></pre><p>这是什么意思呢？首先我们说抽象语法数会把这样一段表达式存储成如下的形式</p><p><img src alt="AST-diagram"/></p><p>而上面的 <code>Expr</code> 就存储了这样一颗树，它的根结点是最低优先级的 <code>+</code> 函数的函数调用，</p><pre><code class="language-julia-repl">julia&gt; ex.head
+:call
+
+julia&gt; ex.args[1]
+:+</code></pre><p>这个函数调用有两个输入，分别是</p><pre><code class="language-julia-repl">julia&gt; ex.args[2]
+1
+
+julia&gt; ex.args[3]
+:(2b)</code></pre><p>而第二个输入则是另外一段表达式（的结果），这段表达式是<code>*</code> 函数的函数调用</p><pre><code class="language-julia-repl">julia&gt; ex.args[3].head
+:call
+
+julia&gt; ex.args[3].args[1]
+:*
+
+julia&gt; ex.args[3].args[2]
+2
+
+julia&gt; ex.args[3].args[3]
+:b</code></pre><p>于是最终通过嵌套 <code>Expr</code> 这样的一个节点和 <code>Symbol</code> 类型这样的叶子节点，我们构成了一颗树。</p><h2 id="再谈谈函数-1">再谈谈函数<a class="docs-heading-anchor" href="#再谈谈函数-1" title="Permalink"></a></h2><p>所以我们之前的方法将会被覆盖。在Julia里，函数声明是可以不用写 <code>return</code> 关键字的，所有的函数在没有显式（explicitly） 声明 <code>return</code> 关键字的时候都将默认返回整段表达式中的最后一个表达式。</p><h2 id="变量的作用域-1">变量的作用域<a class="docs-heading-anchor" href="#变量的作用域-1" title="Permalink"></a></h2><h2 id="语法糖（Syntax-Sugar）以及一些语法的等价性-1">语法糖（Syntax Sugar）以及一些语法的等价性<a class="docs-heading-anchor" href="#语法糖（Syntax-Sugar）以及一些语法的等价性-1" title="Permalink"></a></h2></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../workflow/">« 程序的编写流程</a><a class="docs-footer-nextpage" href="../define-your-own-matrix/">实现你自己的稀疏矩阵 »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 16 November 2019 07:36">Saturday 16 November 2019</span>. Using Julia version 1.2.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
