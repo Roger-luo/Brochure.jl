@@ -4,7 +4,7 @@
 过一下这部分，因为Julia作为一门JIT编译的语言，有时候在编写上，相比解释型语言会有一些明显的延迟（latency）。
 下面的编写流程主要是为了帮助你绕过这个延迟的。
 
-## 终端（Terminal）和REPL
+## [终端（Terminal）和REPL](@id terminal_and_repl)
 
 **如果你使用Windows，你可以选择忽略终端这部分**
 
