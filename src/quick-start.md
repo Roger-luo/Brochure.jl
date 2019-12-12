@@ -159,10 +159,10 @@ foo(-1)
 
 ## 自定义类型
 一般来说我们会使用两种组合类型（composite type），这些类型由其它的数据类型组合而来。而在Julia里有两种，一种是成员的值在定义之后可变的
-类型，另外一种是成员的值在定义之后不可变的类型。
+类型，另外一种是成员的值在定义之后不可变的类型。类型在Julia中主要有两个作用：一是用来派发方法（method），二是用来包装数据结构。
 
 ### 不可变类型
-不可变类型使用 `struct` 关键字进行声明，格式如下
+不可变类型使用 `struct` 关键字进行声明（也就是说我们默认一个类型是不可变的），格式如下
 
 ```julia
 struct Cat
@@ -172,7 +172,33 @@ end
 
 ### 可变类型
 
+可变类型需要使用 `mutable` 关键字进行标注
+
+```julia
+mutable struct Cat
+    name::String
+end
+```
+
+!!! note
+    在Julia里，从语义上讲（semantically）我们不区分这两种类型对应的内存分配方式。但是在优化层面，尽管Julia没有提供
+    像C++一样的显式声明栈上分配的内存（stack allocated）的语义，但是通过对不可变等性质的推导，它依然可以和C++达到相近
+    的内存分配大小 [^1]。
+
+[^1]: [相关讨论可以参见discourse上的帖子](https://discourse.julialang.org/t/why-mutable-structs-are-allocated-on-the-heap/12992/25?u=roger-luo)
+
 ## 参数类型
+
+在很多情况下，一些类型有着相近的含义和数据结构，但是它们需要派发的方法可能有所不同。这个时候我们往往会需要用到参数类型。
+Julia中类型参数可以使用大括号 `{}` 声明。类型参数本身在编译时期也是有类型的，统一为 `TypeVar` 类型。例如下面这个文档
+中也用到了的复数类型的例子。对于类型参数，我们可以使用 `<:` 来声明它的上界。
+
+```julia
+struct Complex{T <: Number}
+    real::T
+    imag::T
+end
+```
 
 ## 数组
 数组是一种特别的类型，和其它语言不同的是，在Julia我们的数组是多维数组（multi-dimensional array）。所谓数组，
