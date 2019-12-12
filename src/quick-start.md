@@ -183,9 +183,12 @@ end
 !!! note
     在Julia里，从语义上讲（semantically）我们不区分这两种类型对应的内存分配方式。但是在优化层面，尽管Julia没有提供
     像C++一样的显式声明栈上分配的内存（stack allocated）的语义，但是通过对不可变等性质的推导，它依然可以和C++达到相近
-    的内存分配大小 [^1]。
+    的内存分配大小 [^相关讨论]。
 
-[^1]: [相关讨论可以参见discourse上的帖子](https://discourse.julialang.org/t/why-mutable-structs-are-allocated-on-the-heap/12992/25?u=roger-luo)
+[^相关讨论]:
+    相关讨论可以参见discourse上的帖子:
+    - [Why mutable structs are allocated on the heap?](https://discourse.julialang.org/t/why-mutable-structs-are-allocated-on-the-heap/12992/25?u=roger-luo)
+    - [Clarification about memory management of immutable and mutable struct](https://discourse.julialang.org/t/clarification-about-memory-management-of-immutable-and-mutable-struct/31064)
 
 ## 参数类型
 
@@ -205,6 +208,33 @@ end
 实际上它是一种对内存的抽象模型。在Julia里一个数组类型（`Array`）的实例代表了一块连续的内存
 
 在Julia里它扮演了两种角色：**计算机意义上的数组**以及**数学意义上的多维张量**。
+在很多机器学习框架中，也往往实现了多位数组或者张量（Tensor，例如PyTorch）。而这些
+实现本质上只是一种对一块**连续内存**的查看方式。
+
+一般来说多位数组的实际数据结构如下
+
+```julia
+struct MyArray{T, N}
+    storage::Ptr{T}
+    size::NTuple{N, Int}
+    strides::NTuple{N, Int}
+end
+```
+
+其中 `storage` 是一个指向某块内存的指针，这块内存上存了一些 `T` 类型构成的元素 ，`size` 记录了这个多维数组的大小，`strides` 则
+用来表示每个维度之间间隔的元素个数，什么意思呢？例如下表是一个有20个浮点类型（双精度）的内存块，它可能存储了一个4x5矩阵的值，也有可能存储了一个2x5x2的三阶张量的值。
+
+| 内存地址 | 0xf21010 | 0xf21018 | 0xf21020 | ``\cdots`` | 0xf210a0 | 0xf210a8 |
+| ------  | -------- | -------- | -------- | -------- | -------- | -------- |
+| 值      | 0.0      | 1.0      |2.0       | ``\cdots``| 18.0    | 19.0     |
+
+向系统申请这个内存块，在不再使用之后删除所分配的内存并不需要知道对应张量的大小。甚至有可能几个元素数目不同但是总数相同的张量（比如4x4,2x2x2x2,1x16的不同大小张量）可以通过用不同的 `MyArray` 共享一块内存。但当我们需要完成张量的一些运算，例如对于矩阵，他们的乘积（matrix product），点积（dot product）等运算会需要使用维度的信息（各个维度的大小）并且这个时候我们将按照维度来访问不同位置的元素，这使得我们首先需要存储各个维度的大小 `size` ，但是这还不够，我们实际上在访问一块连续内存的时候实际上使用的是不同维度上的间隔，例如第一个维度上的间隔一般是0，第二个维度上的间隔是第一个维度的大小`size[0]`，依次类推，但也有可能由于是由某个较大的张量分割来的，并不满足上述间隔分配方式，所以我们有必要再用一个数组存储各个维度的间隔大小 `strides`。这样在访问某个角标ijk对应的内存地址时就可以用
+
+```julia
+(i - 1) * strides[0] + (j - 1) * strides[1] + (k - 1) * strides[2]
+```
+
+作为一个元素的真实内存地址了。当然Julia已经为我们做好了这些事情，在平时使用的时候我们不需要去在意它到底是怎么实现的。但是在我们后面的章节里，我们还会用到这些性质和定义。
 
 ## 表达式
 在Julia里，任何一段程序都首先是一段表达式（expression）。所谓的表达式是一种数据结构，它存储了
