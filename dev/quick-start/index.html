@@ -17,7 +17,7 @@ foo (generic function with 0 methods)</code></pre><p>而每一种不同的输入
           x + 1
           return x
        end
-foo (generic function with 1 method)</code></pre><p>这里 <code>function</code> 和 <code>end</code> 关键字作为标识函数声明的符号。 有人也许会有疑问，为什么Julia里要使用 <code>end</code> 作为结尾，而不是 <code>{}</code> 或者像 Python一样使用锁进呢？当你阅读到 <a href="#表达式-1">表达式</a>这一部分我想你就能够得到部分答案，当你掌握元编程之后，你便会体会到 <code>end</code> 的妙处。</p><p>或者，你也可以使用更简洁的写法。但是注意由于这个声明和上一个声明的类型标签相同（都是一个 <code>Any</code> 类型的函数参数）</p><pre><code class="language-julia-repl">julia&gt; foo(x) = x + 1
+foo (generic function with 1 method)</code></pre><p>这里 <code>function</code> 和 <code>end</code> 关键字作为标识函数声明的符号。 有人也许会有疑问，为什么Julia里要使用 <code>end</code> 作为结尾，而不是 <code>{}</code> 或者像 Python一样使用缩进呢？当你阅读到 <a href="#表达式-1">表达式</a>这一部分我想你就能够得到部分答案，当你掌握元编程之后，你便会体会到 <code>end</code> 的妙处。</p><p>或者，你也可以使用更简洁的写法。但是注意由于这个声明和上一个声明的类型标签相同（都是一个 <code>Any</code> 类型的函数参数）</p><pre><code class="language-julia-repl">julia&gt; foo(x) = x + 1
 foo (generic function with 1 method)</code></pre><h4 id="类型标注-1">类型标注<a class="docs-heading-anchor" href="#类型标注-1" title="Permalink"></a></h4><h4 id="带类型标注的方法声明-1">带类型标注的方法声明<a class="docs-heading-anchor" href="#带类型标注的方法声明-1" title="Permalink"></a></h4><p>我们还可以对函数参数加上类型标注（type annotation），这将具体规定这个方法所适配的类型，例如</p><pre><code class="language-julia-repl">julia&gt; foo(x::Int) = 2x
 foo (generic function with 2 methods)</code></pre><p>或者是更多的变量，不同类型的组合等等</p><pre><code class="language-julia-repl">julia&gt; foo(x::Int, y::Float32) = y
 foo (generic function with 3 methods)
@@ -84,7 +84,7 @@ end</code></pre><h3 id="可变类型-1">可变类型<a class="docs-heading-ancho
 end</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>在Julia里，从语义上讲（semantically）我们不区分这两种类型对应的内存分配方式。但是在优化层面，尽管Julia没有提供 像C++一样的显式声明栈上分配的内存（stack allocated）的语义，但是通过对不可变等性质的推导，它依然可以和C++达到相近 的内存分配大小 <sup class="footnote-reference"><a id="citeref-相关讨论" href="#footnote-相关讨论">[相关讨论]</a></sup>。</p></div></div><h2 id="参数类型-1">参数类型<a class="docs-heading-anchor" href="#参数类型-1" title="Permalink"></a></h2><p>在很多情况下，一些类型有着相近的含义和数据结构，但是它们需要派发的方法可能有所不同。这个时候我们往往会需要用到参数类型。 Julia中类型参数可以使用大括号 <code>{}</code> 声明。类型参数本身在编译时期也是有类型的，统一为 <code>TypeVar</code> 类型。例如下面这个文档 中也用到了的复数类型的例子。对于类型参数，我们可以使用 <code>&lt;:</code> 来声明它的上界。</p><pre><code class="language-julia">struct Complex{T &lt;: Number}
     real::T
     imag::T
-end</code></pre><h2 id="数组-1">数组<a class="docs-heading-anchor" href="#数组-1" title="Permalink"></a></h2><p>数组是一种特别的类型，和其它语言不同的是，在Julia我们的数组是多维数组（multi-dimensional array）。所谓数组， 实际上它是一种对内存的抽象模型。在Julia里一个数组类型（<code>Array</code>）的实例代表了一块连续的内存</p><p>在Julia里它扮演了两种角色：<strong>计算机意义上的数组</strong>以及<strong>数学意义上的多维张量</strong>。 在很多机器学习框架中，也往往实现了多位数组或者张量（Tensor，例如PyTorch）。而这些 实现本质上只是一种对一块<strong>连续内存</strong>的查看方式。</p><p>一般来说多位数组的实际数据结构如下</p><pre><code class="language-julia">struct MyArray{T, N}
+end</code></pre><h2 id="数组-1">数组<a class="docs-heading-anchor" href="#数组-1" title="Permalink"></a></h2><p>数组是一种特别的类型，和其它语言不同的是，在Julia我们的数组是多维数组（multi-dimensional array）。所谓数组， 实际上它是一种对内存的抽象模型。在Julia里一个数组类型（<code>Array</code>）的实例代表了一块连续的内存</p><p>在Julia里它扮演了两种角色：<strong>计算机意义上的数组</strong>以及<strong>数学意义上的多维张量</strong>。 在很多机器学习框架中，也往往实现了多维数组或者张量（Tensor，例如PyTorch）。而这些 实现本质上只是一种对一块<strong>连续内存</strong>的查看方式。</p><p>一般来说多位数组的实际数据结构如下</p><pre><code class="language-julia">struct MyArray{T, N}
     storage::Ptr{T}
     size::NTuple{N, Int}
     strides::NTuple{N, Int}
