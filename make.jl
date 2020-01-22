@@ -43,7 +43,7 @@ function serve_book(verbose=false)
     return nothing
 end
 
-if ("s" in ARGS) || ("serve" in ARGS)
+if ("s" in ARGS) || ("serve" in ARGS) || isinteractive()
     serve_book("verbose" in ARGS)
 end
 
