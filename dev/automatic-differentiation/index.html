@@ -1,2 +1,283 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>实现你自己的自动微分 · Julia编程指南</title><link rel="canonical" href="https://rogerluo.me/Brochure.jl/dev/automatic-differentiation/index.html"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Julia编程指南</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">简介</a></li><li><a class="tocitem" href="../before-we-start/">在开始之前</a></li><li><a class="tocitem" href="../workflow/">程序的编写流程</a></li><li><a class="tocitem" href="../quick-start/">快速入门</a></li><li><a class="tocitem" href="../define-your-own-matrix/">实现你自己的稀疏矩阵</a></li><li class="is-active"><a class="tocitem" href>实现你自己的自动微分</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>实现你自己的自动微分</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>实现你自己的自动微分</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/Roger-luo/Brochure.jl/blob/master/src/automatic-differentiation.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="自动微分-1"><a class="docs-heading-anchor" href="#自动微分-1">自动微分</a><a class="docs-heading-anchor-permalink" href="#自动微分-1" title="Permalink"></a></h1><p>自动微分（automatic differentiation）技术在机器学习里也叫做后向传播，它的原理实际上是通过记录运算顺序，利用已经定义好的导数规则，生成一个正常计算程序对偶的程序。一般来说有两种自动微分方式，一种是前向自动微分（Forward Automatic Differentiation）另外一种是后向自动微分（Reverse Automatic Differentiation），后者更加适合多参数的情况（算法细节就不详述了，多参数的时候后向自动微分的时间复杂度更低，一次传播可以计算所有的参数）。 后向自动微分会讲所有的操作以一张图的方式存储下来，这张图称为计算图。这也是各大深度学习框架的核心所在——如何干净地产生一个计算图，然后高效计算它。 为了展示计算图是什么，我从Cornell，CS5740，2017sp这门课的课件里搬运了一些图，然后把他们做成了动画。动画使用纯Julia的框架Luxor制作。</p><p>我们以计算下面这个表达式为例：</p><div>\[y = \mathbf{x}^T \mathbf{A} \mathbf{x} + \mathbf{b} \cdot \mathbf{x} + c\]</div><p>我们将会调用这样一些Julia函数来计算它：</p><ol><li><span>$z_1 = x^T$</span></li><li><span>$z_2 = z_1 A$</span></li><li><span>$y_1 = z_2 x$</span></li><li><span>$y_2 = b \cdot x$</span></li><li><span>$y_1 + y_2 + c$</span></li></ol><p>而实际上我们可以把这个过程画成下面的这个图</p><p><img src="http://blog.rogerluo.me/images/comput-graph-forward.gif" alt="forward"/></p><p><img src="http://blog.rogerluo.me/images/comput-graph-backward.gif" alt="backward"/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../define-your-own-matrix/">« 实现你自己的稀疏矩阵</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 22 January 2020 23:09">Wednesday 22 January 2020</span>. Using Julia version 1.2.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>实现你自己的自动微分 · Julia编程指南</title><link rel="canonical" href="https://rogerluo.me/Brochure.jl/dev/automatic-differentiation/index.html"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Julia编程指南</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">简介</a></li><li><a class="tocitem" href="../before-we-start/">在开始之前</a></li><li><a class="tocitem" href="../workflow/">程序的编写流程</a></li><li><a class="tocitem" href="../quick-start/">快速入门</a></li><li><a class="tocitem" href="../define-your-own-matrix/">实现你自己的稀疏矩阵</a></li><li class="is-active"><a class="tocitem" href>实现你自己的自动微分</a><ul class="internal"><li><a class="tocitem" href="#动态图-VS-静态图-1"><span>动态图 VS 静态图</span></a></li><li><a class="tocitem" href="#其它节点-1"><span>其它节点</span></a></li><li><a class="tocitem" href="#求值-1"><span>求值</span></a></li><li><a class="tocitem" href="#后向传播-1"><span>后向传播</span></a></li><li><a class="tocitem" href="#代码修饰-1"><span>代码修饰</span></a></li><li><a class="tocitem" href="#性能对比-1"><span>性能对比</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>实现你自己的自动微分</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>实现你自己的自动微分</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/Roger-luo/Brochure.jl/blob/master/src/automatic-differentiation.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="自动微分-1"><a class="docs-heading-anchor" href="#自动微分-1">自动微分</a><a class="docs-heading-anchor-permalink" href="#自动微分-1" title="Permalink"></a></h1><p>自动微分（automatic differentiation）技术在机器学习里也叫做后向传播，它的原理实际上是通过记录运算顺序，利用已经定义好的导数规则，生成一个正常计算程序对偶的程序。一般来说有两种自动微分方式，一种是前向自动微分（Forward Automatic Differentiation）另外一种是后向自动微分（Reverse Automatic Differentiation），后者更加适合多参数的情况（算法细节就不详述了，多参数的时候后向自动微分的时间复杂度更低，一次传播可以计算所有的参数）。 后向自动微分会讲所有的操作以一张图的方式存储下来，这张图称为计算图。这也是各大深度学习框架的核心所在——如何干净地产生一个计算图，然后高效计算它。 为了展示计算图是什么，我从Cornell，CS5740，2017sp这门课的课件里搬运了一些图，然后把他们做成了动画。动画使用纯Julia的框架Luxor制作。</p><p>我们以计算下面这个表达式为例：</p><div>\[y = \mathbf{x}^T \mathbf{A} \mathbf{x} + \mathbf{b} \cdot \mathbf{x} + c\]</div><p>我们将会调用这样一些Julia函数来计算它：</p><ol><li><span>$z_1 = x^T$</span></li><li><span>$z_2 = z_1 A$</span></li><li><span>$y_1 = z_2 x$</span></li><li><span>$y_2 = b \cdot x$</span></li><li><span>$y_1 + y_2 + c$</span></li></ol><p>而实际上我们可以把这个过程画成下面的这个图</p><p><img src="http://blog.rogerluo.me/images/comput-graph-forward.gif" alt="forward"/></p><p>而计算这样一张图，我们将先从叶子结点开始赋值（绿色），然后依次计算相邻的节点，不断向前传播。这个过程称为前向传播过程。 接下来我们按照链式法则来计算导数，每个节点返回的导数都和输入的数量相同，我们从最上面的节点开始向后传播，将当前有导数的节点标记为红色。</p><p><img src="http://blog.rogerluo.me/images/comput-graph-backward.gif" alt="backward"/></p><p>当红色传播到变量处时，我们就获得了变量的导数。</p><h2 id="动态图-VS-静态图-1"><a class="docs-heading-anchor" href="#动态图-VS-静态图-1">动态图 VS 静态图</a><a class="docs-heading-anchor-permalink" href="#动态图-VS-静态图-1" title="Permalink"></a></h2><p>按照构建计算图的方式不同，我们可以将计算图分为动态图和静态图两种，尽管在算法上并没有很大区别，但是在实现上我们可以选择在前向传播的过程中构建计算图（比如PyTorch），也可以选择先构建计算图再计算各个节点的值（比如tensorflow）。</p><p>就我个人而言，我比较喜欢PyTorch，所以这里我将实现一个动态图。</p><p>定义计算图中的节点 在我们开始写具体的实现之前，先来为所有的节点类型定义一个抽象类型（类似于基类）：</p><pre><code class="language-julia">abstract type AbstractNode end</code></pre><p>在PyTorch里，能够拥有导数的称为变量（Variable），尽管在0.4版本之后Tensor默认就是一个Variable了（有requires_grad为True），在后端依然还有这个类型。它是对计算图构建过程中不可或缺的类型。接下来我们来定义变量（Variable）</p><pre><code class="language-julia">mutable struct Variable{T} &lt;: AbstractNode
+    value::T
+    grad::T
+
+    Variable(val::T) where T = new{T}(val, zero(grad))
+end</code></pre><p>类似PyTorch一样，变量存储了值（value）和它的梯度（grad），在每一次后向传播的过程中我们将会不断地将梯度累加到这个变量的梯度上去。这里 <code>zero</code> 是几乎所有Julia数值类型都有的一个接口，它将放回对应的零元素，例如对 <code>Float64</code> 类型的Julia变量，将返回0.0，对<code>Array{Float64}</code>将返回一个充满0.0的 <code>Array{Float64}</code>。</p><h2 id="其它节点-1"><a class="docs-heading-anchor" href="#其它节点-1">其它节点</a><a class="docs-heading-anchor-permalink" href="#其它节点-1" title="Permalink"></a></h2><p>我们现在有了变量了，也就是计算图的叶子结点，接下来还需要有中间的节点。它们将存储一个函数和它们的输入</p><pre><code class="language-julia">struct Node{FT &lt;: Function, ArgsT &lt;: Tuple, KwargsT &lt;: NamedTuple} &lt;: AbstractNode
+    f::FT
+    args::ArgsT
+    kwargs::KwargsT
+end</code></pre><p>我们这里使用参数类型，这样在将来进行分发的时候，编译器能够自己通过类型推导出要分发的函数从而提高运行时的性能。 但我们应当要考虑broadcast（广播）和正常的函数调用的区别，由于Julia能够对任意函数进行广播，广播时所调用的实际上是 broadcast 函数，所以我们不妨实现两个trait来区分这种情况：</p><pre><code class="language-julia">abstract type Operator end
+
+module Trait
+import YAAD: Operator
+
+struct Method{FT} &lt;: Operator
+    f::FT
+end
+
+struct Broadcasted{FT} &lt;: Operator
+    f::FT
+end
+end # Trait</code></pre><p>这里我将这两个trait实现在一个module里面是为了能够显示地体现出他们俩是trait，因为之后调用的时候将会写为 <code>Trait.Method</code> 和 <code>Trait.Broadcasted</code> ，他们各自存储了一个函数（注意Julia里每个函数都是一个callable的类型）。 然后我们把原先Node类型的参数约束Function改成Operator</p><pre><code class="language-julia">struct Node{FT &lt;: Operator, ArgsT &lt;: Tuple, KwargsT &lt;: NamedTuple} &lt;: AbstractNode
+    f::FT
+    args::ArgsT
+    kwargs::KwargsT
+end</code></pre><p>接下来为了方便我们来定义一些构造函数</p><pre><code class="language-julia"># wrap function to Method
+Node(f::Function, args, kwargs) = Node(Trait.Method(f), args, kwargs)
+Node(op, args) = Node(op, args, NamedTuple())</code></pre><p>第一个是因为大部分时间，我们要记录的函数就是它本身而不是一个广播，第二个是因为大部分涉及数值计算的函数都没有关键字（keyword）。 实际上，Node类型本身也只是函数和它的输入类型的一个trait，它在计算的过程中也只是负责（静态地）分发方法。在更加高级的实现里，我们实际上有更加漂亮的实现，利用Cassette.jl对Julia代码进行非侵入式地自动微分（意思是无需给源码重载运算符，增加Variable类型，编译器将直接在JIT期间对前向传播的代码进行变换，从而直接得到计算梯度的代码）。 最后，我们还需要定义一个缓存函数输出的对象，这个缓存的值将会被一些函数的导数用到</p><pre><code class="language-julia">mutable struct CachedNode{NT &lt;: AbstractNode, OutT} &lt;: AbstractNode
+    node::NT
+    output::OutT
+end</code></pre><p>而这个节点将在前向传播的同时被构建出来（否则我们无法知道输出的类型是什么）</p><pre><code class="language-julia">function CachedNode(f, args...; kwargs...)
+    node = Node(f, args, kwargs.data) # this constructs a Node
+    output = forward(node)
+    CachedNode(node, output)
+end</code></pre><p>我们暂且把这个接口定义为forward（与PyTorch一致）</p><h2 id="求值-1"><a class="docs-heading-anchor" href="#求值-1">求值</a><a class="docs-heading-anchor-permalink" href="#求值-1" title="Permalink"></a></h2><p>求值是最重要的部分，因为我们需要将我们的自动微分设计地可扩展，尽量不要在扩展的时候编写冗余的代码。而在Julia里，我们可以利用多重派发（multiple dispatch）实现这一点。</p><p>求值是最重要的部分，因为我们需要将我们的自动微分设计地可扩展，尽量不要在扩展的时候编写冗余的代码。而在Julia里，我们可以利用多重派发（multiple dispatch）实现这一点。</p><h3 id="前向传播-1"><a class="docs-heading-anchor" href="#前向传播-1">前向传播</a><a class="docs-heading-anchor-permalink" href="#前向传播-1" title="Permalink"></a></h3><p>那么如何进行前向传播呢？这取决于对于 forward 这个抽象函数（generic function），实现了什么方法（method）：</p><ol><li>如果输入是一个 Node 类型，我们将其展开</li></ol><pre><code class="language-julia">forward(node.f, map(forward, node.args)...; map(forward, node.kwargs)...)</code></pre><ol><li>这将使得我们多了一层插入自定义方法的接口，如果我们有一个自定义的算符，它并非一个函数，我们只需要实现对应的方法即可，例如</li></ol><pre><code class="language-julia">struct Linear &lt;: Operator
+  w::Matrix{Float64}
+  b::Vector{Float64}
+end
+
+
+forward(op::Linear, x::Vector{Float64}) = op.w * x + b</code></pre><ol><li>然而对于简单的函数调用，我们并不想每次都写</li></ol><pre><code class="language-julia">function forward(::Method{typeof(sin)}, x)
+  sin(x)
+end</code></pre><p>所以我们再实现一个默认展开Operator的方法</p><pre><code class="language-julia">forward(op::Operator, args...; kwargs...) = op(args...; kwargs...)</code></pre><p>这意味着只要Operator实现了自己的call方法（如果这个Operator类型是callable的），那么就无需去写别的东西，自动调用这个方法。当然我们现在要回去给Method Trait实现一下它的call方法</p><pre><code class="language-julia">(op::Trait.Method)(args...; kwargs...) = op.f(args...; kwargs...)</code></pre><p>例如，我们现在只需要定义 Linear的call方法就够了</p><pre><code class="language-julia">(op::Linear)(x::Vector) = op.w * x + op.b</code></pre><ol><li>此外，除了变量，还有一些常数例如</li></ol><pre><code class="language-julia">Variable(2.0) + 3.0</code></pre><p>这里的3.0就是一个不需要求导的常数，我们原封不动地返回它，这样我们只要实现一个 value 接口来获取值即可</p><pre><code class="language-julia">value(x) = x
+value(x::Variable) = x.value
+value(x::CachedNode) = x.output</code></pre><p>然后直接调用value</p><pre><code class="language-julia">forward(x) = x
+forward(x::Variable) = value(x)</code></pre><p>然后别忘了，对于其它类型我们返回一个友好一些的报错</p><pre><code class="language-julia">forward(x::NT) where {NT &lt;: AbstractNode} = error(&quot;forward method is not implemented for node type: $NT&quot;)
+
+function value(x::T) where {T &lt;: AbstractNode}
+    error(
+        &quot;Expected value in this node $x of type $T &quot;,
+        &quot;check if you defined a non-cached node&quot;,
+        &quot; or overload value function for your node.&quot;
+    )
+end</code></pre><p>然后对于 <code>Variable</code> 和 <code>CachedNode</code> 我们要返回它们存储的值，好的👌，到目前为止，我们已经搞定前向传播部分了，接下来是后向传播部分。</p><h2 id="后向传播-1"><a class="docs-heading-anchor" href="#后向传播-1">后向传播</a><a class="docs-heading-anchor-permalink" href="#后向传播-1" title="Permalink"></a></h2><p>后向传播实际上和前向传播几乎是一样的，我们只要不断地在不同的类型标签下迭代backward接口即可（注意我不打算在这里实现关键词的后向传播，尽管这并不难）</p><p>首先，对Variable来说，这很简单直接加接收到的梯度就好了</p><pre><code class="language-julia">function backward(x::Variable, grad)
+    x.grad += grad
+    nothing
+end</code></pre><p>然后我们现在定义 <code>CachedNode</code> 的后向传播规则 我们先从一个叫 <code>gradient</code> 的方法里获得各个输入的导数 然后再把这些导数依次输入到输入类型对应的 <code>backward</code> 函数里去</p><pre><code class="language-julia">function backward(node::CachedNode, f, grad)
+    grad_inputs = gradient(node, grad)
+    for (each, each_grad) in zip(args(node), grad_inputs)
+        backward(each, each_grad)
+    end
+    nothing
+end</code></pre><p>等等，我们要在这里加一些友好的报错信息，面得以后我们自己抓狂。首先是类型的检查，这完全是静态的，所以不同担心会影响性能</p><pre><code class="language-julia">backward_type_assert(node::CachedNode{&lt;:AbstractNode, T}, grad::T) where T = true
+backward_type_assert(node::CachedNode{&lt;:AbstractNode, T1}, grad::T2) where {T1, T2} =
+    error(&quot;Gradient is expected to have the same&quot;,
+          &quot; type with outputs, expected $T1&quot;,
+          &quot; got $T2&quot;)</code></pre><p>我们在这里要求输出和梯度的类型要一样，但是对于多维数组（<code>AbstractArray</code>）我们只要求它们的数据类型和维度相同即可，因为有可能一些函数会返回特别优化的数组（例如稀疏数组，或者一些懒惰求值的中间结果）。</p><pre><code class="language-julia"># exclude arrays
+backward_type_assert(node::CachedNode{&lt;:AbstractNode, T1}, grad::T2) where
+    {T, N, T1 &lt;: AbstractArray{T, N}, T2 &lt;: AbstractArray{T, N}} = true
+然后我们还要检查梯度和输出的大小是否匹配
+function backward_size_assert(node::CachedNode, grad)
+    size(node.output) == size(grad) ||
+        error(
+            &quot;gradient should have the same size with output,&quot;,
+            &quot; expect size $(size(node.output)), got $(size(grad))&quot;
+        )
+end</code></pre><p>在Julia里，可以通过编译选项把边界检查关掉，因为我们有时候完全不需要边界检查，你可以通过增加 @boundscheck 这个宏来实现这一点，最后我们的backward函数如下：</p><pre><code class="language-julia">function backward(node::CachedNode, f, grad)
+    backward_type_assert(node, grad)
+    @boundscheck backward_size_assert(node, grad)
+
+    grad_inputs = gradient(node, grad)
+    for (each, each_grad) in zip(args(node), grad_inputs)
+        backward(each, each_grad)
+    end
+    nothing
+end</code></pre><p>现在我们来考虑如何定义梯度，也就是gradient方法，我们依然希望不要写冗余的代码，同时保证性能和扩展性。比如，实现sin的导数只需要定义</p><pre><code class="language-julia">gradient(::typeof(sin), grad, output, x) = grad * cos(x)</code></pre><p>我们还是利用多重派发来实现这一点，先把 <code>CachedNode</code> 展开</p><pre><code class="language-julia">gradient(x::CachedNode, grad) = gradient(x.node.f, grad, x.output, map(value, x.node.args)...; map(value, x.node.kwargs)...)</code></pre><p>然后把Operator展开到函数上去</p><pre><code class="language-julia">gradient(x::Trait.Method, grad, output, args...; kwargs...) =
+    gradient(x.f, grad, output, args...; kwargs...)</code></pre><p>最后定义一个报错信息</p><pre><code class="language-julia">gradient(fn, grad, output, args...; kwargs...) =
+    error(
+        &quot;gradient of operator $fn is not defined\n&quot;,
+        &quot;Possible Fix:\n&quot;,
+        &quot;define one of the following:\n&quot;,
+        &quot;1. gradient(::typeof($fn), grad, output, args...; kwargs...)\n&quot;,
+        &quot;2. gradient(op::Trait.Method{typeof($fn)}, grad, output, args...; kwargs...)\n&quot;,
+        &quot;3. gradient(op::Trait.Broadcasted{typeof($fn)}, grad, output, args...; kwargs...)\n&quot;
+    )</code></pre><p>这样，我们就可以选择不同的gradient接口来实现导数，Julia将自动派发你实现的这个方法，例如</p><pre><code class="language-julia"># I re-define the concrete type `Linear` here in order to store the gradient
+struct Linear &lt;: Operator
+  w::Variable{Matrix{Float64}}
+  b::Variable{Vector{Float64}}
+end
+
+function gradient(op::Linear, grad, output, x)
+  grad_w, grad_b = # some gradient expression to calculate the gradient of w and b
+  backward(op.w, grad_w) # update gradient of w
+  backward(op.w, grad_b) # update gradient of b
+
+  grad_input = # calculate the gradient of input
+  grad_input # return the gradient of input
+end</code></pre><p>最后我们定义一个 <code>register</code> 的接口用来产生 <code>CachedNode</code></p><pre><code class="language-julia">register(f, args...; kwargs...) = CachedNode(f, args...; kwargs...)</code></pre><p>这样我们就可以通过重载函数/运算符来构建计算图了</p><pre><code class="language-julia">Base.sin(x::AbstractNode) = register(Base.sin, x)
+gradient(::typeof(Base.sin), grad, output, x) = (grad * cos(x), )</code></pre><p>不过等等，似乎这里有时候需要判断一下输入是什么类型比较好，我们不妨为Variable和CachedNode定义一个抽象类型Value</p><pre><code class="language-julia">abstract type Value{T} &lt;: AbstractNode end</code></pre><p>Value类型将带有其子类型的值的类型T作为其参数。现在先回去修改 <code>Variable</code> 和 <code>CachedNode</code></p><pre><code class="language-julia">mutable struct Variable{T} &lt;: Value{T}
+    value::T
+    grad::T
+
+    Variable(val::T) where T = new{T}(val, zero(grad))
+end
+
+mutable struct CachedNode{NT &lt;: AbstractNode, OutT} &lt;: Value{OutT}
+    node::NT
+    output::OutT
+end</code></pre><h3 id="广播-1"><a class="docs-heading-anchor" href="#广播-1">广播</a><a class="docs-heading-anchor-permalink" href="#广播-1" title="Permalink"></a></h3><p>然而上面的定义还只能给标量用，对于数组我们还需要广播才行。Julia自己实现了一套广播系统，它能够广播任何Julia函数到数组上，会融合多个被广播的函数（从而产生更优质的向量化SIMD代码），同时还允许定义广播的行为。这恰好就是我们需要的：我们要在广播的同时产生一个计算图，记录这个操作 首先我们定义我们自己的广播风格（BroadcastStyle）：</p><pre><code class="language-julia">struct ComputGraphStyle &lt;: Broadcast.BroadcastStyle end
+Base.BroadcastStyle(::Type{&lt;:AbstractNode}) = ComputGraphStyle()
+Broadcast.BroadcastStyle(s::ComputGraphStyle, x::Broadcast.BroadcastStyle) = s</code></pre><p>这还不够，Julia的broadcast是懒惰求值的，它先通过broadcasted方法构建中间类型，然后再在最后通过materialize方法进行求值。我们还需要让它们也被记录在计算图里</p><pre><code class="language-julia">function Broadcast.broadcasted(::ComputGraphStyle, f, args...)
+    mt = Trait.Broadcasted(f)
+    register(mt, args...)
+end
+
+Broadcast.materialize(x::AbstractNode) = register(Broadcast.materialize, x)</code></pre><p>然后我们让 <code>materialize</code> 在后向传播的时候直接返回梯度</p><pre><code class="language-julia">function backward(node::CachedNode, ::typeof(Broadcast.materialize), grad)
+    backward_type_assert(node, grad)
+    @boundscheck backward_size_assert(node, grad)
+    backward(node.node.args[1], grad) # materialize only has one arguments, we don&#39;t need the for loop
+end</code></pre><p>然而这时，Broadcasted类型的backward会调用默认的CachedNode的backward方法，有时就会因为类型不同报错（因为我们之前这么定义了）我们为这个类型开个后门</p><pre><code class="language-julia">function backward(node::CachedNode, ::Trait.Broadcasted, grad)
+    grad_inputs = gradient(node, grad)
+    for (each, each_grad) in zip(args(node), grad_inputs)
+        backward(each, each_grad)
+    end
+    nothing
+end</code></pre><h3 id="免费获得更多的算符-1"><a class="docs-heading-anchor" href="#免费获得更多的算符-1">免费获得更多的算符</a><a class="docs-heading-anchor-permalink" href="#免费获得更多的算符-1" title="Permalink"></a></h3><p>Julia有一个包叫做 DiffRules.jl 它记录了大量常用算符的导数规则，并且这些导数规则都以Julia表达式的方式记录，这意味着我们可以利用元编程批量生产算符。 这些导数规则都在一个常数列表里，名为<code>DiffRules.DEFINED_DIFFRULES</code>，我们遍历它即可</p><pre><code class="language-julia">for (mod, name, nargs) in keys(DiffRules.DEFINED_DIFFRULES)
+  # code generation
+end</code></pre><p>这里 mod 是module的名字，name是函数的名字，nargs是函数输入变量的个数，然后我们就可以用如下的方式来批量产生这些导数的定义</p><pre><code class="language-julia">for (mod, name, nargs) in keys(DiffRules.DEFINED_DIFFRULES)
+    f_ex_head = Expr(:., mod, QuoteNode(name))
+
+    if nargs == 1
+        df_ex = DiffRules.diffrule(mod, name, :x)
+
+        name === :abs &amp;&amp; continue # exclude abs, it cannot be directly broadcasted
+
+        @eval begin
+            $(f_ex_head)(x::AbstractNode) = register($(f_ex_head), x)
+            gradient(::typeof($(f_ex_head)), grad, output, x) = (grad * $df_ex, )
+            gradient(mt::Trait.Broadcasted{typeof($f_ex_head)}, grad, output, x) = (@.(grad * $(df_ex)), )
+        end
+    elseif nargs == 2
+        df_ex = DiffRules.diffrule(mod, name, :x, :y)
+
+        @eval begin
+
+            $(f_ex_head)(x1::AbstractNode, x2) = register($f_ex_head, x1, x2)
+            $(f_ex_head)(x1, x2::AbstractNode) = register($f_ex_head, x1, x2)
+            $(f_ex_head)(x1::AbstractNode, x2::AbstractNode) = register($f_ex_head, x1, x2)
+
+            gradient(::typeof($f_ex_head), grad, output, x, y) =
+                (grad * $(df_ex[1]), grad * $(df_ex[2]))
+            gradient(::Trait.Broadcasted{typeof($f_ex_head)}, grad, output, x, y) =
+                (@.(grad * ($(df_ex[1]))), @.(grad * $(df_ex[2])))
+        end
+    else
+        @info &quot;unknown operator $name&quot;
+    end
+end</code></pre><p>对如何使用代码生成，我建议你阅读Julia的文档：<a href="http://docs.juliacn.com/latest/manual/metaprogramming/">元编程 · Julia中文文档</a> 。我在这里跳过了 <code>abs</code> 函数是因为批量广播的宏不能对 <code>if else</code> 进行广播。我们需要单独去定义 <code>abs</code> 的导数，但是剩下几乎所有的数学函数都用Diffrules生成了。</p><h2 id="代码修饰-1"><a class="docs-heading-anchor" href="#代码修饰-1">代码修饰</a><a class="docs-heading-anchor-permalink" href="#代码修饰-1" title="Permalink"></a></h2><p>之后我又花了一些时间实现仿照PyTorch了一个计算Jacobbian的函数用来做单元测试。然后利用Trait将数组类型的 <code>Variable</code> 重新插入 <code>AbstractArray</code> 的类型树中以实现更好的打印信息。</p><h2 id="性能对比-1"><a class="docs-heading-anchor" href="#性能对比-1">性能对比</a><a class="docs-heading-anchor-permalink" href="#性能对比-1" title="Permalink"></a></h2><p>好了！到此我们就写完了这个自动微分库了，它的性能怎么样呢？我起初以为这么简单的一个实现只是一个玩具，但实际上它的性能非常不错！ 我需要计算一个称为MPS的东西（Matrix product state），所以我在这里使用了我使用最频繁的操作进行benchmark，这个操作是 tr(x1 * x2) ，这里 x1和x2是矩阵，然后对其求迹。</p><p>所以我首先为YAAD实现了这两个算符：</p><pre><code class="language-julia"># 这一部分其实已经在DiffRules进行代码生成的时候定义过了
+Base.:(*)(lhs::Value, rhs) = register(Base.:(*), lhs, rhs)
+Base.:(*)(lhs, rhs::Value) = register(Base.:(*), lhs, rhs)
+Base.:(*)(lhs::Value, rhs::Value) = register(Base.:(*), lhs, rhs)
+
+# 这里开始是新的定义
+using LinearAlgebra
+
+LinearAlgebra.tr(x::Value) = register(LinearAlgebra.tr, x)
+gradient(::typeof(tr), grad, output, x) = (grad * Matrix(I, size(x)), )
+
+function gradient(::typeof(*), grad, output, lhs::AbstractVecOrMat, rhs::AbstractVecOrMat)
+    grad * transpose(rhs), transpose(lhs) * grad
+end</code></pre><p>julia</p><p>然后我选取了几个Julia的库（Zygote，Flux，YAAD是我的），还有PyTorch在CPU上进行了一下比较</p><pre><code class="language-julia">Zygote.@grad LinearAlgebra.tr(x) = LinearAlgebra.tr(x), Δ-&gt; (Δ * Matrix(I, size(x)), )
+
+function bench_tr_mul_yaad(x1, x2)
+    z = tr(x1 * x2)
+    YAAD.backward(z)
+    x1.grad, x2.grad
+end
+
+function bench_tr_mul_autograd(x1, x2)
+    z = AutoGrad.@diff tr(x1 * x2)
+    AutoGrad.grad(z, x1), AutoGrad.grad(z, x2)
+end
+
+function bench_tr_mul_zygote(x1, x2)
+    Zygote.gradient((x1, x2)-&gt;tr(x1 * x2), x1, x2)
+end
+
+function bench_tr_mul_flux(x1, x2)
+    z = tr(x1 * x2)
+    Flux.Tracker.back!(z, 1)
+    x1.grad, x2.grad
+end</code></pre><p>然后在Python里测试PyTorch（我们的接口和PyTorch非常相似不是吗？）</p><pre><code class="language-python">def bench_tr_mul_torch(x1, x2):
+    z = torch.trace(torch.matmul(x1, x2))
+    z.backward()
+    return x1.grad, x2.grad</code></pre><p>然后输入定义如下：</p><pre><code class="language-julia">xv, yv = rand(30, 30), rand(30, 30)
+yaad_x, yaad_y = YAAD.Variable(xv), YAAD.Variable(yv)
+autograd_x, autograd_y = AutoGrad.Param(xv), AutoGrad.Param(yv)
+flux_x, flux_y = Flux.param(xv), Flux.param(yv)</code></pre><p>此外，在进行测试之前，我们实现一个手动计算梯度的版本作为基准：</p><pre><code class="language-julia">function bench_tr_mul_base(x1, x2)
+    z1 = x1 * x2
+    z2 = tr(z1)
+
+    grad_z1 = Matrix{eltype(z1)}(I, size(z1))
+    grad_z1 * transpose(x2), transpose(x1) * grad_z1
+end</code></pre><p>然后在Julia里我们用 <code>@benchmark</code> 宏来多次测量以获取运行时间</p><pre><code class="language-julia">julia&gt; @benchmark bench_tr_mul_autograd(autograd_x, autograd_y)
+BenchmarkTools.Trial:
+  memory estimate:  33.20 KiB
+  allocs estimate:  82
+  --------------
+  minimum time:     50.218 μs (0.00% GC)
+  median time:      62.364 μs (0.00% GC)
+  mean time:        90.422 μs (9.86% GC)
+  maximum time:     55.386 ms (99.86% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
+
+julia&gt; @benchmark bench_tr_mul_yaad(yaad_x, yaad_y)
+BenchmarkTools.Trial:
+  memory estimate:  51.50 KiB
+  allocs estimate:  16
+  --------------
+  minimum time:     10.387 μs (0.00% GC)
+  median time:      13.429 μs (0.00% GC)
+  mean time:        24.273 μs (45.13% GC)
+  maximum time:     55.963 ms (99.96% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
+
+julia&gt; @benchmark bench_tr_mul_zygote(xv, yv)
+BenchmarkTools.Trial:
+  memory estimate:  29.98 KiB
+  allocs estimate:  10
+  --------------
+  minimum time:     42.527 μs (0.00% GC)
+  median time:      46.640 μs (0.00% GC)
+  mean time:        56.996 μs (15.31% GC)
+  maximum time:     51.718 ms (99.90% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
+
+julia&gt; @benchmark bench_tr_mul_base(xv, yv)
+BenchmarkTools.Trial:
+  memory estimate:  28.78 KiB
+  allocs estimate:  5
+  --------------
+  minimum time:     6.413 μs (0.00% GC)
+  median time:      8.201 μs (0.00% GC)
+  mean time:        12.215 μs (31.57% GC)
+  maximum time:     11.012 ms (99.87% GC)
+  --------------
+  samples:          10000
+  evals/sample:     5
+
+julia&gt; @benchmark bench_tr_mul_flux(flux_x, flux_y)
+BenchmarkTools.Trial:
+  memory estimate:  30.25 KiB
+  allocs estimate:  24
+  --------------
+  minimum time:     8.009 μs (0.00% GC)
+  median time:      10.002 μs (0.00% GC)
+  mean time:        14.412 μs (30.14% GC)
+  maximum time:     16.286 ms (99.87% GC)
+  --------------
+  samples:          10000
+  evals/sample:     3</code></pre><p>然后PyTorch (0.4.1) 上</p><pre><code class="language-python">In [4]: x = torch.rand(30, 30, dtype=torch.float64, requires_grad=True)
+
+In [5]: y = torch.rand(30, 30, dtype=torch.float64, requires_grad=True)
+
+In [6]: %timeit bench_tr_mul_torch(x, y)
+76.8 µs ± 1.68 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)</code></pre><p>所以我们花了小半天实现的这个自动微分还不赖嘛？只比基准性能满了几个微秒，意外的是它竟然比PyTorch快了不少。然后Flux的Tracker性能竟然非常接近手动求导！</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../define-your-own-matrix/">« 实现你自己的稀疏矩阵</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 22 January 2020 23:32">Wednesday 22 January 2020</span>. Using Julia version 1.2.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
