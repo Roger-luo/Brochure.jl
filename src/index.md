@@ -16,7 +16,7 @@ Julia语言在2018年正式发布了第一个长期支持版本（1.0版本）�
 在命令行里
 
 ```sh
-julia make.jl
+julia make.jl serve
 ```
 
 或者打开Julia的REPL，然后运行
