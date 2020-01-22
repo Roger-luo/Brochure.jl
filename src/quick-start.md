@@ -345,5 +345,3 @@ dump(
 
 ## 变量的作用域
 变量的作用域决定了一个变量能够被访问的区域。在Julia里作用域分为全局作用域（global scope）和局部作用域（local scope）。
-
-## 语法糖（Syntax Sugar）以及一些语法的等价性
