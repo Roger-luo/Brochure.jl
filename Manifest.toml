@@ -10,10 +10,9 @@ uuid = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
 version = "0.5.8"
 
 [[Crayons]]
-deps = ["Test"]
-git-tree-sha1 = "f621b8ef51fd2004c7cf157ea47f027fdeac5523"
+git-tree-sha1 = "cb7a62895da739fe5bb43f1a26d4292baf4b3dc0"
 uuid = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
-version = "4.0.0"
+version = "4.0.1"
 
 [[Dates]]
 deps = ["Printf"]
@@ -31,11 +30,9 @@ version = "0.8.1"
 
 [[Documenter]]
 deps = ["Base64", "Dates", "DocStringExtensions", "InteractiveUtils", "JSON", "LibGit2", "Logging", "Markdown", "REPL", "Test", "Unicode"]
-git-tree-sha1 = "7e4e014303acbfa13cf93f8e29c2e766c7739da1"
-repo-rev = "master"
-repo-url = "https://github.com/JuliaDocs/Documenter.jl.git"
+git-tree-sha1 = "51f0c7df46abb9c07d80e529718951e634670afb"
 uuid = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-version = "0.24.0-DEV"
+version = "0.24.4"
 
 [[FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
@@ -69,10 +66,10 @@ uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [[LiveServer]]
-deps = ["Crayons", "Documenter", "FileWatching", "HTTP", "Sockets", "Test"]
-git-tree-sha1 = "cb7d253514ed8c7c92fe9288fce474ea8132ef43"
+deps = ["Crayons", "Documenter", "FileWatching", "HTTP", "Pkg", "Sockets", "Test"]
+git-tree-sha1 = "043fd50ad8745468751fb83f5e53493fe73ee97b"
 uuid = "16fef848-5104-11e9-1b77-fb7a48bbb589"
-version = "0.1.0"
+version = "0.3.5"
 
 [[Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
@@ -92,12 +89,12 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
 [[Parsers]]
 deps = ["Dates", "Test"]
-git-tree-sha1 = "c56ecb484f286639f161e712b8311f5ab77e8d32"
+git-tree-sha1 = "0139ba59ce9bc680e2925aec5b7db79065d60556"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "0.3.8"
+version = "0.3.10"
 
 [[Pkg]]
-deps = ["Dates", "LibGit2", "Markdown", "Printf", "REPL", "Random", "SHA", "UUIDs"]
+deps = ["Dates", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "UUIDs"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[Printf]]
