@@ -284,12 +284,12 @@ dump(:(1 + 2 * b))
 这是什么意思呢？首先我们说抽象语法数会把这样一段表达式存储成如下的形式
 
 ```@example
-# using GraphRecipes # hide
-# using Plots # hide
-# default(size=(300, 300)) # hide
-# pyplot() # hide
-# code = :(1 + 2 * b) # hide
-# plot(code, fontsize=12, shorten=0.01, axis_buffer=0.15, nodeshape=:rect) # hide
+using GraphRecipes # hide
+using Plots # hide
+default(size=(300, 300)) # hide
+pyplot() # hide
+code = :(1 + 2 * b) # hide
+plot(code, fontsize=12, shorten=0.01, axis_buffer=0.15, nodeshape=:rect) # hide
 ```
 
 而上面的 `Expr` 就存储了这样一颗树，它的根结点是最低优先级的 `+` 函数的函数调用，
