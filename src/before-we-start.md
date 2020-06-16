@@ -32,8 +32,7 @@ macOS实际上和Linux非常类似，这也就是说上面这套在Linux上安�
 按照正常的macOS应用进行安装即可，Julia的编译器将会出现在你的 Application 文件夹中。
 
 ### Windows
-
-*我不用Windows，希望有人可以补充*
+从 Julia 官网下载操作系统对应版本的安装程序 `julia-x.y.z-win64/win32.exe`，选择安装路径后执行。安装完成后，将安装路径下的 `<disk>:\<install path>\bin` 添加至 `Path` 系统变量中。在 Windows 10 操作系统下，`Path` 可以在 `查看高级系统设置 → 环境变量 → 系统变量` 下查看并编辑。
 
 ### 从源码编译
 
