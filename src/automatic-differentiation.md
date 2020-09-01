@@ -45,7 +45,7 @@ mutable struct Variable{T} <: AbstractNode
     value::T
     grad::T
 
-    Variable(val::T) where T = new{T}(val, zero(grad))
+    Variable(val::T) where T = new{T}(val, zero(val))
 end
 ```
 
