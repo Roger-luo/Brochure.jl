@@ -140,7 +140,7 @@ struct Linear <: Operator
 end
 
 
-forward(op::Linear, x::Vector{Float64}) = op.w * x + b
+forward(op::Linear, x::Vector{Float64}) = op.w * x + op.b
 ```
 
 3. 然而对于简单的函数调用，我们并不想每次都写
@@ -231,7 +231,7 @@ function backward(node::CachedNode, f, grad)
 end
 ```
 
-等等，我们要在这里加一些友好的报错信息，面得以后我们自己抓狂。首先是类型的检查，这完全是静态的，所以不同担心会影响性能
+等等，我们要在这里加一些友好的报错信息，免得以后我们自己抓狂。首先是类型的检查，这完全是静态的，所以不同担心会影响性能
 
 ```julia
 backward_type_assert(node::CachedNode{<:AbstractNode, T}, grad::T) where T = true
@@ -615,4 +615,4 @@ In [6]: %timeit bench_tr_mul_torch(x, y)
 76.8 µs ± 1.68 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
 ```
 
-所以我们花了小半天实现的这个自动微分还不赖嘛？只比基准性能满了几个微秒，意外的是它竟然比 PyTorch 快了不少。然后 Flux 的 Tracker 性能竟然非常接近手动求导！
+所以我们花了小半天实现的这个自动微分还不赖嘛？只比基准性能慢了几个微秒，意外的是它竟然比 PyTorch 快了不少。然后 Flux 的 Tracker 性能竟然非常接近手动求导！
