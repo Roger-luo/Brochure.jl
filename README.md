@@ -34,12 +34,12 @@ include("make.jl")
 这本书就会以网页的形式挂在到 [localhost:8000](http://localhost:8000/index.html)，它使用了 [Documenter](https://github.com/JuliaDocs/Documenter.jl) 和 [LiveServer](https://github.com/asprionj/LiveServer.jl) 这两个Julia包进行编译和挂载。如果你喜欢黑夜模式（dark mode）
 你还可以点击右上角的齿轮按钮选择黑夜模式。
 
-## 赞赏
+<!-- ## 赞赏
 
 赞赏是让我完成它的最好鼓励
 
 <img src="https://github.com/Roger-luo/Brochure.jl/raw/master/src/assets/buymecoffee.png" alt="buymecoffee" width="300"> </img>
-
+ -->
 ## 协议
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可。代码部分使用MIT协议。
