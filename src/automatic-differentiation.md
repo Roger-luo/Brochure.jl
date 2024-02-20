@@ -18,11 +18,11 @@ y = \mathbf{x}^T \mathbf{A} \mathbf{x} + \mathbf{b} \cdot \mathbf{x} + c
 
 而实际上我们可以把这个过程画成下面的这个图
 
-![forward](http://blog.rogerluo.me/images/comput-graph-forward.gif)
+![forward]([http://blog.rogerluo.me/images/comput-graph-forward.gif](https://blog.rogerluo.dev/images/comput-graph-forward.gif))
 
 而计算这样一张图，我们将先从叶子结点开始赋值（绿色），然后依次计算相邻的节点，不断向前传播。这个过程称为前向传播过程。接下来我们按照链式法则来计算导数，每个节点返回的导数都和输入的数量相同，我们从最上面的节点开始向后传播，将当前有导数的节点标记为红色。
 
-![backward](http://blog.rogerluo.me/images/comput-graph-backward.gif)
+![backward]([https://blog.rogerluo.dev/images/comput-graph-backward.gif](https://blog.rogerluo.dev/images/comput-graph-backward.gif))
 
 当红色传播到变量处时，我们就获得了变量的导数。
 
